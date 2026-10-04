@@ -53,4 +53,12 @@ Create the repository skeleton so every later task has a place to land, with dep
 
 ## Verification log
 
-_Fill in when finishing: for each acceptance criterion, the test name, command output, measurement or dated manual check that proves it._
+Verified on 2026-10-03, macOS 26 (aarch64), toolchain 1.99.0.
+
+- **Build and clippy (macOS):** `cargo build --workspace` and `cargo clippy --workspace --all-targets --all-features -- -D warnings` finish with no warnings. **Linux:** no local container runtime is available, so Linux is proven by the first green CI run of P0-002 (ubuntu-latest), linked in P0-002's log.
+- **`--version`:** `cargo run -p highset-cli -- --version` prints `highset 0.1.0`. Unit test `highset_cli::tests::version_flag_prints_name_and_version`.
+- **check-deps:** `cargo run -p xtask -- check-deps` prints `check-deps: all internal dependency edges are allowed`. Unit tests in `xtask/src/check_deps.rs` use fake metadata graphs: `forbidden_edge_fails` (tui → store), `core_cannot_depend_on_internal_crates`, `sideways_service_edges_fail_even_as_build_dependencies`, `testkit_only_as_dev_dependency`, `dev_dependencies_follow_the_same_rules`, `unknown_member_fails`, `allowed_graph_passes`, `every_rule_names_a_known_crate`.
+- **Crate READMEs:** all 19 crate directories (`crates/*`, `tools/fake-agent`, `xtask`) have a `README.md` with purpose, lane and allowed internal dependencies.
+- **Release profile:** `[profile.release]` has `lto = "thin"`, `codegen-units = 1`, `strip = true`, `panic = "unwind"` (performance.md §3 rule 9). Stub release binary: 576 KB.
+- **DoD:** fmt clean; clippy clean; `cargo test --workspace` green (10 tests); no `unwrap`/`expect`/`panic!` in non-test code (now enforced by `clippy::unwrap_used`, `expect_used`, `panic` at workspace level, with tests exempt via `clippy.toml`); every crate has a crate-level doc comment and `missing_docs` is on; no user-facing strings besides the CLI `about` text, which becomes a Fluent key in P0-005; no secrets.
+- **Docs:** ARCHITECTURE.md §2 gained rules 5–6 that make implicit edges explicit (`highset-core` usable by every crate; `highset-cli` → `highset-protocol`; `highset-testkit` dev-only).
