@@ -4,7 +4,7 @@ title: "Bootstrap the Cargo workspace"
 lane: infra
 milestone: M1
 size: S
-status: todo
+status: in-progress
 depends_on: []
 requirements: [NFR-MAINT-1]
 open_questions: []
