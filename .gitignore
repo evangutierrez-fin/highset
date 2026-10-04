@@ -1,0 +1,20 @@
+# Build output
+/target/
+**/target/
+
+# Local HighSet state never belongs in git
+.highset/local/
+/.highset-dev/
+
+# Editors and OS files
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Snapshot review leftovers
+*.pending-snap
+*.snap.new
+
+# Local Claude Code settings
+.claude/settings.local.json
