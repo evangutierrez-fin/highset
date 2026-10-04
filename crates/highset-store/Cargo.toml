@@ -1,0 +1,13 @@
+[package]
+name = "highset-store"
+description = "Content files (Markdown/TOML read and write, atomic and round-trip safe), the SQLite cache and its migrations, the file watcher, and backups"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true

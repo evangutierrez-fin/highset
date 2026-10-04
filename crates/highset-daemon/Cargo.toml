@@ -1,0 +1,13 @@
+[package]
+name = "highset-daemon"
+description = "Wiring: the socket server, service registry, event bus, session supervisor, attention, hooks engine, notifications, scheduler and backups"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,7 @@
+# Tests may unwrap, expect and panic freely; non-test code may not (see [workspace.lints]).
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-panic-in-tests = true
+
+# Proper names that `clippy::doc_markdown` would otherwise ask to wrap in backticks.
+doc-valid-idents = ["HighSet", "OpenAI", "SQLite", "LLMs", ".."]

@@ -36,6 +36,7 @@ Make every push prove formatting, lints, tests, dependency rules and supply-chai
 ## Acceptance criteria
 
 - [ ] CI is green on `main` for both operating systems.
+- [ ] The first green CI run on `ubuntu-latest` (build, clippy `-D warnings`, test, check-deps) is linked in P0-001's verification log. This closes P0-001's Linux criterion.
 - [ ] A deliberately mis-formatted commit on a scratch branch fails the `fmt` job (link to the run in the verification log).
 - [ ] A full CI run takes ≤ 10 minutes with a warm cache.
 - [ ] `cargo deny check` passes locally and in CI.

@@ -1,0 +1,13 @@
+[package]
+name = "highset-protocol"
+description = "JSON-RPC 2.0 messages, the typed method and event catalog, newline-delimited framing, error codes and the async client shared by every client and the daemon"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true

@@ -106,6 +106,10 @@ Rules:
 2. Clients (`highset-tui`, `highset-mcp`) depend on `highset-protocol`, never on service crates. They only reach state through the daemon.
 3. Service crates never depend on each other sideways unless the graph above shows it. Cross-service coordination happens in `highset-daemon`.
 4. `highset-agents` never depends on `highset-context`. Adapters receive a ready `ContextBundle` (a core type) in their `LaunchSpec`.
+5. Every crate except `highset-i18n` and `xtask` may depend on `highset-core` directly; the graph omits those edges for readability. `highset-cli` may also depend on `highset-protocol` directly, because it is a client.
+6. `highset-testkit` may depend on any crate, and other crates may use it **only as a dev-dependency**. Apart from that, dev- and build-dependencies follow the same rules as normal ones.
+
+The rule table lives in `xtask/src/check_deps.rs`; change this section and that table in the same commit.
 
 ## 3. Data model
 

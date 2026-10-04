@@ -1,0 +1,89 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/highset-core",
+    "crates/highset-protocol",
+    "crates/highset-store",
+    "crates/highset-search",
+    "crates/highset-git",
+    "crates/highset-secrets",
+    "crates/highset-i18n",
+    "crates/highset-llm",
+    "crates/highset-agents",
+    "crates/highset-context",
+    "crates/highset-method",
+    "crates/highset-plugins",
+    "crates/highset-mcp",
+    "crates/highset-daemon",
+    "crates/highset-tui",
+    "crates/highset-cli",
+    "crates/highset-testkit",
+    "tools/fake-agent",
+    "xtask",
+]
+# Lets `cargo run -- <args>` start the `highset` binary. Checks must always pass `--workspace`
+# (`cargo test --workspace`, `cargo clippy --workspace …`); plain `cargo test` only covers the CLI.
+default-members = ["crates/highset-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99"
+license = "MIT"
+repository = "https://github.com/evangutierrez-fin/highset"
+authors = ["HighSet contributors"]
+# Nothing is published to crates.io until R-002 decides otherwise (ADR 0023).
+publish = false
+
+[workspace.dependencies]
+# Internal crates. Allowed edges are checked by `cargo run -p xtask -- check-deps`.
+highset-core = { path = "crates/highset-core" }
+highset-protocol = { path = "crates/highset-protocol" }
+highset-store = { path = "crates/highset-store" }
+highset-search = { path = "crates/highset-search" }
+highset-git = { path = "crates/highset-git" }
+highset-secrets = { path = "crates/highset-secrets" }
+highset-i18n = { path = "crates/highset-i18n" }
+highset-llm = { path = "crates/highset-llm" }
+highset-agents = { path = "crates/highset-agents" }
+highset-context = { path = "crates/highset-context" }
+highset-method = { path = "crates/highset-method" }
+highset-plugins = { path = "crates/highset-plugins" }
+highset-mcp = { path = "crates/highset-mcp" }
+highset-daemon = { path = "crates/highset-daemon" }
+highset-tui = { path = "crates/highset-tui" }
+highset-testkit = { path = "crates/highset-testkit" }
+
+# Third-party crates. Keep versions here so every crate uses the same one.
+anyhow = "1.0.104"
+clap = { version = "4.6.7", default-features = false, features = ["std", "help", "usage", "error-context", "suggestions"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+# Pedantic lints we allow, and why:
+# - crate-prefixed names (e.g. `StoreError` in `highset-store`) read better across many crates;
+module_name_repetitions = "allow"
+# - `#[must_use]` on every getter is noise; we add it where ignoring a value is a real bug;
+must_use_candidate = "allow"
+# - error enums are documented on the type, not repeated in every `# Errors` section.
+missing_errors_doc = "allow"
+# The Definition of Done bans unwrap/expect/panic in non-test code unless a comment explains
+# why it cannot fail. These lints enforce it; tests are exempt through `clippy.toml`.
+# Use `#[expect(clippy::expect_used, reason = "...")]` for a justified exception.
+unwrap_used = "warn"
+expect_used = "warn"
+panic = "warn"
+
+# Release profile from docs/specs/performance.md §3 (rule 9).
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+# Unwinding is needed so the TUI can restore the terminal after a panic.
+panic = "unwind"
