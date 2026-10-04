@@ -48,4 +48,13 @@ The repository is `github.com/evangutierrez-fin/highset` (OQ-3, resolved); use i
 
 ## Verification log
 
-_Fill in when finishing: for each acceptance criterion, the test name, command output, measurement or dated manual check that proves it._
+Verified on 2026-10-04 (UTC). Repository created public at <https://github.com/evangutierrez-fin/highset> (OQ-4).
+
+- **CI green on both operating systems:** run [37164592022](https://github.com/evangutierrez-fin/highset/actions/runs/37164592022) on the task branch: `fmt`, `clippy`, `test (ubuntu-latest)`, `test (macos-latest)`, `deny`, `xtask`, `perf-smoke` all succeeded. The run on `main` after the merge is linked below.
+- **Mis-formatted commit fails `fmt`:** scratch branch `task/P0-002-scratch-fmt-fail` (deleted afterwards, never merged) added `fn   badly_formatted( ) {}`. Run [37164604855](https://github.com/evangutierrez-fin/highset/actions/runs/37164604855): `fmt` failed (`cargo fmt --all -- --check` exit 1). `clippy` and `test` also failed there because the function is unused and warnings are denied, which is the intended policy.
+- **Full run ≤ 10 minutes with a warm cache:** the first run, with a cold cache, took 51 s end to end (00:19:28 → 00:20:19 UTC). The slowest job was `test (macos-latest)` at 37 s. Warm runs can only be faster; this will grow with the codebase, and R-001 re-measures it.
+- **`cargo deny check` passes locally and in CI:** local `cargo-deny 0.20.2` prints `advisories ok, bans ok, licenses ok, sources ok`. The CI `deny` job uses `EmbarkStudios/cargo-deny-action@v2` and passed.
+- **P0-001 Linux criterion:** linked in P0-001's verification log (the same run 37164592022).
+- **DoD:** fmt, clippy and tests are green locally and in CI; no Rust code changed; no secrets (the workflow has `permissions: contents: read` and no secrets); `docs/development.md` documents the local equivalents of every job.
+
+Verified facts (action versions on 2026-10-03, from the GitHub releases API): `actions/checkout` v7.0.1, `actions-rust-lang/setup-rust-toolchain` v2.0.0 (reads `rust-toolchain.toml`, wraps `Swatinem/rust-cache`, `rustflags` default is empty in v2), `EmbarkStudios/cargo-deny-action` v2.1.1. The v2 toolchain action also makes cargo deny warnings in builds (the `build.warnings` setting), as the scratch run shows.

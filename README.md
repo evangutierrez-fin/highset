@@ -1,5 +1,7 @@
 # HighSet
 
+[![CI](https://github.com/evangutierrez-fin/highset/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/evangutierrez-fin/highset/actions/workflows/ci.yml)
+
 **A command center for working with AI coding agents, from your terminal.**
 
 HighSet organizes your agent work into workspaces, projects, tasks and sessions. It gives every agent the right context from a single source of truth, keeps their configuration in sync, and runs several agents in parallel without them stepping on each other. It also guides each piece of work through a lightweight spec-driven method.

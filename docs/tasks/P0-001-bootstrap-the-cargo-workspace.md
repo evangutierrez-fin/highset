@@ -64,3 +64,4 @@ Verified on 2026-10-03, macOS 26 (aarch64), toolchain 1.99.0.
 - **Docs:** ARCHITECTURE.md §2 gained rules 5–6 that make implicit edges explicit (`highset-core` usable by every crate; `highset-cli` → `highset-protocol`; `highset-testkit` dev-only).
 - **Review:** reviewer subagent verdict PASS (2026-10-03) after fixing one blocking item (Linux evidence tracked in P0-002) and one should-fix (check-deps resolved the workspace root at compile time, which caused a false pass with a shared `CARGO_TARGET_DIR`).
 - **CHANGELOG:** `CHANGELOG.md` is created in P0-003, with the `--version` entry.
+- **Linux (closed by P0-002, 2026-10-04):** first CI run on ubuntu-latest, all green: build `--all-targets`, clippy `-D warnings`, test, check-deps: <https://github.com/evangutierrez-fin/highset/actions/runs/37164592022>.
