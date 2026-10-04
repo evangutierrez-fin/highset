@@ -21,6 +21,8 @@ members = [
     "tools/fake-agent",
     "xtask",
 ]
+# Lets `cargo run -- <args>` start the `highset` binary. Checks must always pass `--workspace`
+# (`cargo test --workspace`, `cargo clippy --workspace …`); plain `cargo test` only covers the CLI.
 default-members = ["crates/highset-cli"]
 
 [workspace.package]
@@ -54,7 +56,7 @@ highset-testkit = { path = "crates/highset-testkit" }
 
 # Third-party crates. Keep versions here so every crate uses the same one.
 anyhow = "1.0.104"
-clap = { version = "4.6.7", default-features = false, features = ["std", "help", "usage", "error-context"] }
+clap = { version = "4.6.7", default-features = false, features = ["std", "help", "usage", "error-context", "suggestions"] }
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
 

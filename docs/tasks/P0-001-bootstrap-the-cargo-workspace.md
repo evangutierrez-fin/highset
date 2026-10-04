@@ -55,7 +55,7 @@ Create the repository skeleton so every later task has a place to land, with dep
 
 Verified on 2026-10-03, macOS 26 (aarch64), toolchain 1.99.0.
 
-- **Build and clippy (macOS):** `cargo build --workspace` and `cargo clippy --workspace --all-targets --all-features -- -D warnings` finish with no warnings. **Linux:** no local container runtime is available, so Linux is proven by the first green CI run of P0-002 (ubuntu-latest), linked in P0-002's log.
+- **Build and clippy (macOS):** `cargo build --workspace` and `cargo clippy --workspace --all-targets --all-features -- -D warnings` finish with no warnings. **Linux:** no local container runtime is available, so the Linux link step is proven by the first green CI run of P0-002 on ubuntu-latest. P0-002 has an acceptance criterion to link that run here. Interim evidence: `cargo clippy --workspace --all-targets --target x86_64-unknown-linux-gnu -- -D warnings` is clean (checks and lints the Linux code paths without linking).
 - **`--version`:** `cargo run -p highset-cli -- --version` prints `highset 0.1.0`. Unit test `highset_cli::tests::version_flag_prints_name_and_version`.
 - **check-deps:** `cargo run -p xtask -- check-deps` prints `check-deps: all internal dependency edges are allowed`. Unit tests in `xtask/src/check_deps.rs` use fake metadata graphs: `forbidden_edge_fails` (tui → store), `core_cannot_depend_on_internal_crates`, `sideways_service_edges_fail_even_as_build_dependencies`, `testkit_only_as_dev_dependency`, `dev_dependencies_follow_the_same_rules`, `unknown_member_fails`, `allowed_graph_passes`, `every_rule_names_a_known_crate`.
 - **Crate READMEs:** all 19 crate directories (`crates/*`, `tools/fake-agent`, `xtask`) have a `README.md` with purpose, lane and allowed internal dependencies.
