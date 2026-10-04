@@ -4,7 +4,7 @@ title: "CI pipeline"
 lane: infra
 milestone: M1
 size: S
-status: todo
+status: in-progress
 depends_on: [P0-001]
 requirements: [NFR-PORT-1]
 open_questions: []

@@ -14,7 +14,7 @@ Total: 60 tasks.
 | ID | Task | Lane | Size | Depends on | Status |
 |---|---|---|---|---|---|
 | [P0-001](P0-001-bootstrap-the-cargo-workspace.md) | Bootstrap the Cargo workspace | infra | S | — | done |
-| [P0-002](P0-002-ci-pipeline.md) | CI pipeline | infra | S | P0-001 | todo |
+| [P0-002](P0-002-ci-pipeline.md) | CI pipeline | infra | S | P0-001 | in-progress |
 | [P0-003](P0-003-open-source-repository-scaffolding.md) | Open-source repository scaffolding | infra | S | P0-001 | todo |
 | [P0-004](P0-004-paths-and-layered-configuration.md) | Paths and layered configuration | infra | M | P0-001 | todo |
 | [P0-005](P0-005-errors-logging-and-i18n-scaffold.md) | Errors, logging and i18n scaffold | infra | M | P0-001 | todo |
