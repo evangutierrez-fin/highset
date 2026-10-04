@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "task/**"]
+  pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch or PR cancels the older run.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: "0"
+  RUST_BACKTRACE: "1"
+
+jobs:
+  fmt:
+    name: fmt
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      # Installs the toolchain pinned in rust-toolchain.toml (with rustfmt and clippy).
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          cache: false
+      - run: cargo fmt --all -- --check
+
+  clippy:
+    name: clippy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          cache-shared-key: clippy
+      - run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+
+  test:
+    name: test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          cache-shared-key: test-${{ matrix.os }}
+      - run: cargo build --workspace --all-targets --locked
+      - run: cargo test --workspace --locked
+
+  deny:
+    name: deny
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check advisories licenses bans sources
+
+  xtask:
+    name: xtask
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          cache-shared-key: xtask
+      - run: cargo run -p xtask --locked -- check-deps
+
+  # Placeholder: R-001 fills this in with PERF-3/7/8/9 smoke checks at 2x budget thresholds
+  # (docs/specs/performance.md §2).
+  perf-smoke:
+    name: perf-smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: echo "perf-smoke is a placeholder until R-001"

@@ -1,0 +1,55 @@
+# cargo-deny policy (P0-002). Run locally with `cargo deny check`.
+# Docs: https://embarkstudios.github.io/cargo-deny/
+
+[graph]
+# Check the platforms we ship (NFR-PORT-1): macOS and glibc Linux, x86_64 and arm64.
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "aarch64-unknown-linux-gnu",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+]
+all-features = true
+
+[advisories]
+# Every RustSec advisory (vulnerable, unmaintained, unsound, yanked) fails the check unless
+# it is listed here with a reason and a review date.
+ignore = []
+
+[licenses]
+# Licenses compatible with distributing HighSet under MIT (ADR 0023).
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Unicode-3.0",
+    "Zlib",
+    "MPL-2.0",
+    "CC0-1.0",
+]
+confidence-threshold = 0.8
+# The allow-list is policy, not inventory: a license nobody uses yet is fine.
+unused-allowed-license = "allow"
+exceptions = []
+
+[licenses.private]
+# Workspace crates are `publish = false`; their license is checked through Cargo metadata.
+ignore = false
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+# Path dependencies between workspace crates have no version; that is fine for private crates.
+allow-wildcard-paths = true
+highlight = "all"
+deny = []
+skip = []
+skip-tree = []
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []
